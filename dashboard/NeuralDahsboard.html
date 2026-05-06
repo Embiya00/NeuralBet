@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NeuralBet Dashboard</title>
+  <link rel="stylesheet" href="./neuralbet-dashboard.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts" defer></script>
+  <script src="./neuralbet-dashboard.js" defer></script>
+</head>
+<body class="nb-body">
+  <div class="nb-root">
+    <header class="nb-header">
+      <div class="nb-logo">
+        <div class="nb-logo-mark">
+          <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <circle cx="9" cy="4" r="2" fill="white"/>
+            <circle cx="3" cy="13" r="2" fill="white"/>
+            <circle cx="15" cy="13" r="2" fill="white"/>
+            <line x1="9" y1="6" x2="4.5" y2="11.5" stroke="white" stroke-width="1.2"/>
+            <line x1="9" y1="6" x2="13.5" y2="11.5" stroke="white" stroke-width="1.2"/>
+            <line x1="5" y1="13" x2="13" y2="13" stroke="white" stroke-width="1.2"/>
+          </svg>
+        </div>
+        <div class="nb-logo-text">Neural<span>Bet</span></div>
+      </div>
+      <div class="nb-header-actions">
+        <div class="nb-status">
+          <span class="nb-dot"></span>
+          Model aktif · <span id="last-update">güncelleniyor...</span>
+        </div>
+        <button class="nb-ghost-btn" type="button">Rapor İndir</button>
+        <button class="nb-primary-btn" type="button">Model Yenile</button>
+      </div>
+    </header>
+
+    <section class="nb-hero">
+      <div class="nb-hero-text">
+        <p class="nb-kicker">Yapay sinir ağı · Real-time değer tespiti</p>
+        <h1>NeuralBet Value Intelligence</h1>
+        <p class="nb-sub">Canlı piyasa oranları ile model olasılıklarını karşılaştır, en yüksek edge fırsatlarını otomatik yakala.</p>
+        <div class="nb-hero-actions">
+          <button class="nb-primary-btn" type="button">Canlı Analiz</button>
+          <button class="nb-ghost-btn" type="button">Simülasyon</button>
+        </div>
+      </div>
+      <div class="nb-hero-card">
+        <div class="nb-hero-label">Bugün risk seviyesi</div>
+        <div class="nb-hero-value">Orta</div>
+        <div class="nb-hero-meter">
+          <span style="width:68%"></span>
+        </div>
+        <div class="nb-hero-foot">
+          <div>
+            <div class="nb-hero-foot-label">Model güveni</div>
+            <div class="nb-hero-foot-val">84%</div>
+          </div>
+          <div>
+            <div class="nb-hero-foot-label">Kasa yönetimi</div>
+            <div class="nb-hero-foot-val">+9.4%</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="nb-stats">
+      <div class="nb-stat">
+        <div class="nb-stat-label">Value Bet</div>
+        <div class="nb-stat-value val-pos" id="stat-value">7</div>
+        <div class="nb-stat-sub">bugün tespit edildi</div>
+      </div>
+      <div class="nb-stat">
+        <div class="nb-stat-label">Ort. Edge</div>
+        <div class="nb-stat-value val-pos" id="stat-edge">+12.4%</div>
+        <div class="nb-stat-sub">piyasaya karşı</div>
+      </div>
+      <div class="nb-stat">
+        <div class="nb-stat-label">Model Doğruluğu</div>
+        <div class="nb-stat-value val-neu" id="stat-acc">71.3%</div>
+        <div class="nb-stat-sub">son 200 maç</div>
+      </div>
+      <div class="nb-stat">
+        <div class="nb-stat-label">Analiz Edilen</div>
+        <div class="nb-stat-value val-neu" id="stat-total">48</div>
+        <div class="nb-stat-sub">maç bugün</div>
+      </div>
+    </section>
+
+    <section class="nb-grid">
+      <div class="nb-card">
+        <div class="nb-card-title">Edge Trendi (Son 14 Gün)</div>
+        <div id="edgeChart" class="nb-chart"></div>
+      </div>
+      <div class="nb-card">
+        <div class="nb-card-title">Model vs Piyasa Dağılımı</div>
+        <div id="distributionChart" class="nb-chart"></div>
+      </div>
+      <div class="nb-card nb-card-wide">
+        <div class="nb-card-title">Günlük Performans</div>
+        <div class="nb-performance">
+          <div class="nb-performance-item">
+            <p class="nb-performance-label">En iyi lig</p>
+            <h3>Premier League</h3>
+            <p class="nb-performance-sub">+18.2% edge</p>
+          </div>
+          <div class="nb-performance-item">
+            <p class="nb-performance-label">En güçlü sinyal</p>
+            <h3>Man City vs Arsenal</h3>
+            <p class="nb-performance-sub">Neural 1.72 · Market 1.95</p>
+          </div>
+          <div class="nb-performance-item">
+            <p class="nb-performance-label">Risk yönetimi</p>
+            <h3>Konservatif</h3>
+            <p class="nb-performance-sub">Stake önerisi: 2.5% banka</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="nb-section">
+      <div class="nb-section-title">maç analizleri</div>
+      <div class="nb-filters" id="filter-row">
+        <button class="nb-chip active" onclick="filterMatches('tümü', this)">Tümü</button>
+        <button class="nb-chip" onclick="filterMatches('strong', this)">Güçlü Value</button>
+        <button class="nb-chip" onclick="filterMatches('medium', this)">Orta Value</button>
+        <button class="nb-chip" onclick="filterMatches('low', this)">Düşük Value</button>
+        <button class="nb-chip" onclick="filterMatches('skip', this)">Pas Geç</button>
+      </div>
+
+      <div class="nb-table-wrap">
+        <table class="nb-table">
+          <thead>
+            <tr>
+              <th>Maç</th>
+              <th>Lig</th>
+              <th style="text-align:right">Neural<br>Oran</th>
+              <th style="text-align:right">Piyasa<br>Oran</th>
+              <th>Edge</th>
+              <th>Sinyal</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="match-tbody"></tbody>
+        </table>
+        <div id="empty-msg" class="nb-empty" style="display:none">Bu kategoride maç bulunamadı.</div>
+      </div>
+    </section>
+
+    <section class="nb-detail-panel" id="detail-panel">
+      <div class="nb-detail-top">
+        <div>
+          <div class="nb-detail-match" id="det-match">—</div>
+          <div class="nb-detail-meta" id="det-meta">—</div>
+        </div>
+        <button class="nb-close-btn" onclick="closeDetail()" aria-label="Kapat">✕</button>
+      </div>
+      <div class="nb-odds-compare" id="det-odds"></div>
+      <div id="det-rec"></div>
+    </section>
+
+    <footer class="nb-footer">
+      <div>Son tarama: <span id="scan-time">—</span></div>
+      <button class="nb-ghost-btn" onclick="sendPrompt('NeuralBet analizini açıkla ve en iyi value bet fırsatını detaylandır')">Derin Analiz ↗</button>
+    </footer>
+  </div>
+</body>
+</html>
